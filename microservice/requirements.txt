@@ -19,3 +19,4 @@ pymorphy2==0.9.1
 pymorphy2-dicts-ru==2.4.417127.4579844
 transliterate==1.10.2
 nltk==3.8.1
+Flask-Cors==4.0.0

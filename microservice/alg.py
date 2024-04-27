@@ -284,6 +284,10 @@ all_tags = set()
 for i in course_skils:
     all_tags = all_tags | i[2]
 
+with open("new_tags.txt") as file:
+    s = set(file.read().replace("{", "").replace("}", "").replace("'", "").split(","))
+    all_tags = all_tags | s
+
 def check(input_tags):
     # Находим курс, который покрыват больше всего
 
@@ -293,7 +297,7 @@ def check(input_tags):
     best_id = []
     coverage = []
     input_tags = set(input_tags) & set(all_tags)
-    print(input_tags)
+    
     input_tags_len = len(input_tags)
     indexes = set(courses.index)
 
@@ -317,7 +321,7 @@ def check(input_tags):
         input_tags = input_tags - courses.loc[max_tags_id][2]
         indexes = indexes - set([max_tags_id])
     
-    success = len(best_id) == 0
+    success = len(best_id) != 0
 
     if not success:
         best_id = [1, 2, 3, 4]
@@ -325,6 +329,6 @@ def check(input_tags):
     ans = courses[courses.index.isin (best_id)]
     ans = ans.drop(columns=["id"])
     ans = ans.sort_values("coverage", ascending=False)
-    output_json = json.dumps({"success":str(success), "courses": ans.to_json()})
+    output_json = json.dumps({"success":str(success), "courses": json.loads(ans.to_json())})
     return output_json
 
