@@ -2,6 +2,7 @@ from flask import Flask
 from flask import request
 from flask_cors import CORS
 import alg  
+import niquests
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
@@ -13,11 +14,8 @@ def index():
         
         if input_test == "":
             try:
-                url = str(request.json.get('url'))
-                response = requests.get(url)
-                print(response.content)
-                soup = BeautifulSoup(response.content, 'lxml')
-                input_test = soup.getText()
+                s = niquests.Session(resolver="doh+google://", multiplexed=True)
+                input_test = s.get(url).text
             except:
                 input_test = ""
         tags = alg.get_tags_vacancy(input_test)
