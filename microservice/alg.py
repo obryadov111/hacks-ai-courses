@@ -235,7 +235,7 @@ def get_courses():
 def course_parsing(url):
     pattr = "\((.+)\)"
     response = requests.get(url)
-    soup = BeautifulSoup(response.text, 'html')
+    soup = BeautifulSoup(response.text, 'lxml')
     skils = set()
     for description in soup.find_all('div', class_="promo-tech__item gkb-promo__tag _large ui-text-body--5"):
         tmp = set(description.span.text.strip().lower().split('/'))
@@ -250,7 +250,7 @@ def course_parsing(url):
 
 course_skils = [(i[0], i[1], course_parsing(i[1]), i[2], i[3]) for i in get_courses()]
 
-df_course_skils = pd.DataFrame(course_skils, columns=["name", "url", "tags", "decription", "term"])
+df_course_skils = pd.DataFrame(course_skils, columns=["name", "url", "tags", "description", "term"])
 without_tags = df_course_skils[df_course_skils["tags"] == set()]
 
 another_tags = []
@@ -267,7 +267,7 @@ with open("tags.txt") as file:
         another_tags.append((url, set(tags)))
 df_another_tags = pd.DataFrame(another_tags, columns=["url", "tags"])
 
-df_courses = pd.DataFrame(course_skils, columns=["name", "url", "tags", "decription", "term"])
+df_courses = pd.DataFrame(course_skils, columns=["name", "url", "tags", "description", "term"])
 df_courses["id"] = df_courses.index
 
 df_all_courses = pd.merge(df_courses,df_another_tags, on='url', how='left')
@@ -298,7 +298,7 @@ def check(input_tags):
     indexes = set(courses.index)
 
     courses["coverage"] = [0]*len(indexes)
-    while len(input_tags)!=0 and len(best_id)<=4:
+    while len(input_tags)!=0 and len(best_id)<4:
         max_tags_len = -1
         max_tags_id = -1
         min_unnecessary_tags_len = -1
@@ -317,9 +317,14 @@ def check(input_tags):
         input_tags = input_tags - courses.loc[max_tags_id][2]
         indexes = indexes - set([max_tags_id])
     
+    success = len(best_id) == 0
+
+    if not success:
+        best_id = [1, 2, 3, 4]
+
     ans = courses[courses.index.isin (best_id)]
     ans = ans.drop(columns=["id"])
-    
-    return ans.sort_values("coverage", ascending=False)
+    ans = ans.sort_values("coverage", ascending=False)
+    output_json = json.dumps({"success":str(success), "courses": ans.to_json()})
+    return output_json
 
-# check(tags, all_tags, df_course_skils)
