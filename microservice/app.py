@@ -10,6 +10,16 @@ cors = CORS(app, resources={r"/*": {"origins": "*"}})
 def index():
     if request.method == 'POST':
         input_test = str(request.json.get('vacancy'))
+        
+        if input_test == "":
+            try:
+                url = str(request.json.get('url'))
+                response = requests.get(url)
+                print(response.content)
+                soup = BeautifulSoup(response.content, 'lxml')
+                input_test = soup.getText()
+            except:
+                input_test = ""
         tags = alg.get_tags_vacancy(input_test)
         ans = alg.check(tags)
         return ans
