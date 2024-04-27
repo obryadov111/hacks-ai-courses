@@ -3,6 +3,8 @@ services:
   microservice-flask:
       build: 
         context: ./microservice
+      volumes:
+        - "./microservice/:/micro_service/"
       image: microservice-flask                  
       restart: unless-stopped
       ports:

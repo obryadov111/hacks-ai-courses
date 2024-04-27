@@ -10,12 +10,12 @@ cors = CORS(app, resources={r"/*": {"origins": "*"}})
 @app.post("/")
 def index():
     if request.method == 'POST':
-        input_test = str(request.json.get('vacancy'))
+        input_test = request.json.get('vacancy', '')
         
         if input_test == "":
             try:
                 s = niquests.Session(resolver="doh+google://", multiplexed=True)
-                input_test = s.get(url).text
+                input_test = s.get(request.json.get('url', '')).text
             except:
                 input_test = ""
         tags = alg.get_tags_vacancy(input_test)
