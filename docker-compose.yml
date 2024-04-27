@@ -11,14 +11,14 @@ services:
             - "404:5000"
       command: python app.py
 
-  courses-front:
-      container_name: courses-front
-      build:
-        context: ./frontend
-      entrypoint: /bin/bash
-      expose:
-        - 8000
-      volumes:
-        - "./frontend:/var/www/html/app"
-      tty: true
+  # courses-front:
+  #     container_name: courses-front
+  #     build:
+  #       context: ./frontend
+  #     entrypoint: /bin/bash
+  #     expose:
+  #       - 8000
+  #     volumes:
+  #       - "./frontend:/var/www/html/app"
+  #     tty: true
 
