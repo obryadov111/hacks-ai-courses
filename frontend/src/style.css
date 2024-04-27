@@ -1,0 +1,39 @@
+:root {
+  --primary-color: #FFFFFF;
+  --success-color: #71E76E;
+  --success-hover-color: #67DD64;
+  --gray-color: #EFF0F5;
+  --gray-hover-color: #D5D6DC;
+  --dark-color: #191816;
+  --link-hover: #8D46F6;
+}
+body {
+  margin: 0;
+  font-size: 16px;
+  font-family: "Onest", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: normal;
+  font-style: normal;
+}
+
+.btn {
+  display: flex;
+  height: 55px;
+  min-width: 55px;
+  width: fit-content;
+  background-color: var(--gray-color);
+  border-radius: 14px;
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+  align-content: center;
+  font-size: 18px;
+  color: var(--dark-color);
+  font-weight: 500;
+  padding: 0 15px;
+  cursor: pointer;
+  text-decoration: none;
+}
+.btn:hover {
+  background-color: var(--gray-hover-color);
+}
