@@ -330,6 +330,6 @@ def check(input_tags):
     ans = courses[courses.index.isin (best_id)]
     ans = ans.drop(columns=["id"])
     ans = ans.sort_values("coverage", ascending=False)
-    output_json = json.dumps({"success":str(success), "courses": json.loads(ans.to_json())})
+    output_json = json.dumps({"success":success, "courses": json.loads(ans.to_json())})
     return output_json
 
