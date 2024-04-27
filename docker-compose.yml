@@ -2,7 +2,7 @@ version: '3'
 services:
   microservice-flask:
       build:
-      context: ./microservice
+        context: ./microservice
       volumes:
       - "./microservice:/micro_service/"
       image: microservice-flask
