@@ -2,23 +2,19 @@ version: '3'
 services:
   microservice-flask:
       build:
-        context: ./microservice
+      context: ./microservice
       volumes:
-        - "./microservice:/micro_service/"
+      - "./microservice:/micro_service/"
       image: microservice-flask
       restart: unless-stopped
       ports:
-            - "404:5000"
+      - "404:5000"
       command: python app.py
 
-  # courses-front:
-  #     container_name: courses-front
-  #     build:
-  #       context: ./frontend
-  #     entrypoint: /bin/bash
-  #     expose:
-  #       - 8000
-  #     volumes:
-  #       - "./frontend:/var/www/html/app"
-  #     tty: true
-
+  apache:
+    image: httpd:latest
+    container_name: frontend
+    ports:
+    - '666:80'
+    volumes:
+    - './frontend/dist:/usr/local/apache2/htdocs'
