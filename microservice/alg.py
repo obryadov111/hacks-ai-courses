@@ -220,6 +220,11 @@ def get_tags_vacancy(text):
         keywords = set(tags + tags2)
     else:
         keywords = set(tags1 + tags2)
+    
+    vip_tags = {"1c", "1с"}
+    for v in vip_tags:
+        if v in text.lower():
+            keywords.add("1c")
     return keywords
 
 def get_courses():
@@ -290,21 +295,23 @@ with open("new_tags.txt") as file:
     s = set(file.read().replace("{", "").replace("}", "").replace("'", "").split(","))
     all_tags = all_tags | s
 
-def only_one_prof(input_vacancy):
+def only_one_prof(input_vacancy, all_taggg):
     try:
         vacancies = get_vacancy(input_vacancy)['items']
-        tokens = {}
-        for vacancy in vacancies:
-            try:
-                skills = get_skills(vacancy)
-                for skill in skills:
-                    tokens.update({skill.lower(): tokens.get(skill.lower(), 0) + 1})
-            except: 
-                pass
-            
-        return set([key for key in sorted(tokens, key=tokens.get, reverse=True)][:10])
     except:
         return set()
+    
+    tokens = {}
+    for vacancy in vacancies:
+        try:
+            skills = get_skills(vacancy)
+            for skill in skills:
+                tokens.update({skill.lower(): tokens.get(skill.lower(), 0) + 1})
+        except: 
+            pass
+    new_dict = {k: v for k, v in tokens.items() if k in all_taggg}
+    lll = min(len(new_dict), 15)
+    return set([key for key in sorted(new_dict, key=new_dict.get, reverse=True)][:lll])
     
 def check(input_tags):
     # Находим курс, который покрыват больше всего
