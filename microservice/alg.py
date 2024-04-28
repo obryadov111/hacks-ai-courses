@@ -77,10 +77,12 @@ morph = MorphAnalyzer()
 def get_vacancy(query = 'ML'):
     params = {
         'text': query,         # Поиск текста
+        'only_with_salary': True,
+        'industry': [7,8,9,11,44,52],
         # 'area': area,         # Поиск в зоне
         # 'page': page,         # Номер страницы
-        'per_page': 100      # Кол-во вакансий на 1 странице
-    }   
+        'per_page': 100       # Кол-во вакансий на 1 странице
+    }
     req = requests.get('https://api.hh.ru/vacancies', params)
     data = json.loads(req.content.decode())
     req.close()
