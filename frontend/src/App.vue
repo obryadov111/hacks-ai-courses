@@ -38,7 +38,7 @@ const loadData = ()=>{
   axios.post('http://toxicus-vulpes.ru:404/', prop).then((response) => {
     if (response) {
       let data = response.data.courses
-      for (let id of Object.keys(data.coverage).reverse()) {
+      for (let id of Object.keys(data.coverage).sort((a, b) => data.coverage[b] - data.coverage[a])) {
         courses_new.push({
           name: data.name[id],
           description: data.description[id].replace("\n", "<br>"),
