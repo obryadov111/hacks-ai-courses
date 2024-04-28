@@ -298,6 +298,7 @@ with open("new_tags.txt") as file:
     all_tags = all_tags | s
 
 def only_one_prof(input_vacancy, all_taggg):
+    input_vacancy = " " + input_vacancy
     try:
         vacancies = get_vacancy(input_vacancy)['items']
     except:
