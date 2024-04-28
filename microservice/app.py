@@ -10,15 +10,20 @@ cors = CORS(app, resources={r"/*": {"origins": "*"}})
 @app.post("/")
 def index():
     if request.method == 'POST':
-        input_test = request.json.get('vacancy', '')
+        input_text = request.json.get('vacancy', '')
         
-        if input_test == "":
+        if input_text == "":
             try:
                 s = niquests.Session(resolver="doh+google://", multiplexed=True)
-                input_test = s.get(request.json.get('url', '')).text
+                input_text = s.get(request.json.get('url', '')).text
             except:
-                input_test = ""
-        tags = alg.get_tags_vacancy(input_test)
+                input_text = ""
+        tags = set()
+        if len(input_text) < 30:
+            tags = alg.only_one_prof(input_text)
+        if len(tags) == 0:
+            tags = alg.get_tags_vacancy(input_text)
+        
         ans = alg.check(tags)
         return ans
     return "Expected post-method."

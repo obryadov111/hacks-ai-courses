@@ -79,7 +79,7 @@ def get_vacancy(query = 'ML'):
         'text': query,         # Поиск текста
         # 'area': area,         # Поиск в зоне
         # 'page': page,         # Номер страницы
-        'per_page': 100       # Кол-во вакансий на 1 странице
+        'per_page': 200      # Кол-во вакансий на 1 странице
     }   
     req = requests.get('https://api.hh.ru/vacancies', params)
     data = json.loads(req.content.decode())
@@ -290,6 +290,22 @@ with open("new_tags.txt") as file:
     s = set(file.read().replace("{", "").replace("}", "").replace("'", "").split(","))
     all_tags = all_tags | s
 
+def only_one_prof(input_vacancy):
+    try:
+        vacancies = get_vacancy(input_vacancy)['items']
+        tokens = {}
+        for vacancy in vacancies:
+            try:
+                skills = get_skills(vacancy)
+                for skill in skills:
+                    tokens.update({skill.lower(): tokens.get(skill.lower(), 0) + 1})
+            except: 
+                pass
+            
+        return set([key for key in sorted(tokens, key=tokens.get, reverse=True)][:10])
+    except:
+        return set()
+    
 def check(input_tags):
     # Находим курс, который покрыват больше всего
 
