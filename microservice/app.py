@@ -21,8 +21,8 @@ def index():
         tags = set()
         if len(input_text) < 30:
             tags = alg.only_one_prof(input_text)
-        if len(tags) == 0:
-            tags = alg.get_tags_vacancy(input_text)
+        
+        tags = tags | alg.get_tags_vacancy(input_text)
         
         ans = alg.check(tags)
         return ans
